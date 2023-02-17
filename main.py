@@ -275,12 +275,14 @@ async def text_msgs(_, m):
         pass
     else:
         INVITE_LINK = ' '
-    await MSG.edit_text(f'**{progress_txt}..**')
-    caption = convert_post(m.text, API,INVITE_LINK)
-    caption = f'{caption}\n{FOOTER}'
-    text = f'<b>{caption}</b>'
-
-    await MSG.edit_text(f'{text}', disable_web_page_preview=True)
+    try:
+        await MSG.edit_text(f'**{progress_txt}..**')
+        caption = convert_post(m.text, API,INVITE_LINK)
+        caption = f'{caption}\n{FOOTER}'
+        text = f'<b>{caption}</b>'
+        await MSG.edit_text(f'{text}', disable_web_page_preview=True)
+    except Exception as ex:
+        await MSG.edit_text(f'Error 285:\n{str(ex)}', disable_web_page_preview=True)
 
 from test import *
 bot.run()
