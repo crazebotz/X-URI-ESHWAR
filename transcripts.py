@@ -1,7 +1,7 @@
 # Text Stringss
 import os
 
-BOT_TOKEN = os.environ.get('BOT_TOKEN',"5661363625:AAEyBehhT25zbPnkWnAc_n15gCWKlseez6c")
+BOT_TOKEN = os.environ.get('BOT_TOKEN',"mnm")
 
 start_txt = '''Hello {name}, I am [Mdiskshortners.in](https://Mdiskshortners.in/) , Bulk Link Converter. I Can Convert Links Directly From Your [Mdiskshortners.in](https://Mdiskshortners.in/),
     
@@ -50,7 +50,7 @@ Paste & Send Token To Me
 Thanks for choosing us...
 '''
 
-footer_txt = '''<b>Hello {name}, I am VivDisk.com Links Converter,
+footer_txt = '''<b>Hello {name}, I am MDISK Links Converter,
 
 🌟 Just Type</b>👉 /footer footer-text
 
