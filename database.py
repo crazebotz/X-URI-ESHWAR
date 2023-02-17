@@ -1,5 +1,5 @@
 # funcs
-import pymongo
+import pymongo,os
 from pymongo.errors import DuplicateKeyError
 
 # ------------Database----------
