@@ -15,6 +15,7 @@ start_txt = '''Hello {name}, I am [Mdiskshortners.in](https://Mdiskshortners.in/
 <b>Example:</b>
 <code>/api <api_token></code> 
 
+🔗 <b>Hit</b> 👉 /commands To Know More About How To use This Bot.
 🔗 <b>Hit</b> 👉 /api To Know More About How To Link Mdiskshortners.in Account To This Bot.
 💁‍♀️ <b>Hit</b> 👉 /help To Get Help.
 ➕ <b>Hit</b> 👉 /footer To Get Help About Adding your Custom Footer to bot.
