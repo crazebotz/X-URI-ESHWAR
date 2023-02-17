@@ -5,11 +5,13 @@ from transcripts import *
 from database import *
 import asyncio
 
-API_ID = 16514976
-API_HASH = '40bd8634b3836468bb2fb7eafe39d81a'
-sudo_users = [1953040213, 5144980226, 874964742,839221827, 5294965763,5317652430,5141357700]
 
-TOKEN = '5398878793:AAEpJan80_J9LZOWuu5An5aamEhTg0BJTmo'
+sudo_users = [1953040213, 5144980226, 874964742,839221827, 5294965763,5317652430,5141357700]
+TOKEN = os.environ.get("BOT_TOKEN", "TOKEN")
+API_HASH = os.environ.get("HASH", "cceefd3382b44d4d85be2d83201102b7") 
+API_ID = os.environ.get("ID", "10956858")
+
+
 bot = Client("Url-Short-Bot", api_id=API_ID,
              api_hash=API_HASH, bot_token=TOKEN, workers=10)
 
