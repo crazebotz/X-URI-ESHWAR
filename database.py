@@ -3,7 +3,7 @@ import pymongo
 from pymongo.errors import DuplicateKeyError
 
 # ------------Database----------
-DB_URL = "mongodb+srv://mdisk:mdisk@cluster0.5f5kz5s.mongodb.net/?retryWrites=true&w=majority"
+DB_URL = os.environ.get("DB_URL", " ")
 
 mongo = pymongo.MongoClient(DB_URL)
 db = mongo["mdiskdata"]
