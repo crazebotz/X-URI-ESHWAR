@@ -1,23 +1,23 @@
 # funcs
-import re
 import time
-
+import re,os
 import requests as rq
-# from unshortenit import UnshortenIt
+from database import *
+from pyrogram import Client
 from transcripts import *
-import pymongo
 
-DB_URL = "mongodb+srv://mdisk:mdisk@cluster0.5f5kz5s.mongodb.net/?retryWrites=true&w=majority"
+# from unshortenit import UnshortenIt
+sudo_users = [1953040213, 5144980226, 874964742,839221827, 5294965763,5317652430,5141357700]
+TOKEN = os.environ.get("BOT_TOKEN", "6209873095:AAEd3Lsewz2XYfWrUB0HlpowXhfL0y5whNA")
+API_HASH = os.environ.get("API_HASH", "cceefd3382b44d4d85be2d83201102b7") 
+API_ID = os.environ.get("API_ID", "10956858")
 
-import pymongo
-from pymongo.errors import DuplicateKeyError
+
+bot = Client("Url-Short-Bot", api_id=API_ID,
+             api_hash=API_HASH, bot_token=TOKEN, workers=10)
+
 
 # ------------Database----------
-
-myclient1 = pymongo.MongoClient(DB_URL)
-mydb = myclient1["mdiskdata"]
-mycol = mydb["users"]
-users_collection = myclient1["mdiskdata"]["users"]
 
 
 # URL Shortner
@@ -27,16 +27,10 @@ API_PTN = r'[a-z0-9]{35,43}'
 REAL_URL = 'https://mdiskshortners.in/api?'
 url_ptrn = r'https?://[^\s]+'
 
-# -----------------------------
-myclient = pymongo.MongoClient(DB_URL)
-mydb = myclient["mdiskdata"]
-mycol = mydb["users"]
 
-
-
-
-def short_urls(url_list, URL_API=SHORT_API):
+def short_urls(url_list, URL_API=SHORT_API,DOMAIN = 'mdiskshortners.in'):
     cnvt_urls = []
+    
     for link in url_list:
 
         # if ('bit' in link ):
@@ -49,6 +43,7 @@ def short_urls(url_list, URL_API=SHORT_API):
         # res=(rq.get(r_url.format(r_token,link)))
             data = dict(res.json())
             link = data['shortenedUrl']
+            link = link.replace('mdiskshortners.in',DOMAIN)
             cnvt_urls.append(link)
 
         except ConnectionResetError:
@@ -71,7 +66,7 @@ def filter_tele_urls(urls):
     return f_urls
 
 
-def convert_post(msg_text, Api,replace_item):
+def convert_post(msg_text, Api,replace_item,Domain):
 
     # msg_text=msg_text.text
     list_string = msg_text.splitlines()
@@ -91,7 +86,7 @@ def convert_post(msg_text, Api,replace_item):
             if (urls[j] in new_msg_text[i]):
                 url_index.append(count)
         count += 1
-    new_urls = short_urls(urls,URL_API=Api)
+    new_urls = short_urls(urls,URL_API=Api,DOMAIN = Domain)
     url_index = list(dict.fromkeys(url_index))
     i = 0
 
