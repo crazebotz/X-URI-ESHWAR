@@ -1,7 +1,9 @@
 # Buttons for bot
 
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
-
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram import Client, filters
+from transcripts import *
+from database import *
 # Start Button
 start_btns = InlineKeyboardMarkup([
     [InlineKeyboardButton("Join Channel ♥️", url="https://t.me/Mdiskshortners_in"),
@@ -24,3 +26,19 @@ connect_btns = InlineKeyboardMarkup([
         "GET API TOKEN 🔑", url="https://MdiskShortner.in/member/tools/api")],
     [InlineKeyboardButton("◀️ Back️", callback_data="back_data"), ],
 ])
+
+
+
+vividisk_btn_a = InlineKeyboardButton("Vividisklinks.in ☑️", callback_data="vividisk_cb")
+vividisk_btn = InlineKeyboardButton("Vividisklinks.in", callback_data="vividisk_cb")
+mdisk_btn_a = InlineKeyboardButton("Mdiskshortners.in ☑️", callback_data="mdisk_cb")
+mdisk_btn = InlineKeyboardButton("Mdiskshortners.in", callback_data="mdisk_cb")
+back_btn = InlineKeyboardButton("close", callback_data="close_cb")
+
+
+MDISK_ACTIV_BTN = InlineKeyboardMarkup([[mdisk_btn_a],[vividisk_btn],[back_btn]])
+VIVI_ACTIV_BTN = InlineKeyboardMarkup([[mdisk_btn],[vividisk_btn_a],[back_btn]])
+
+
+
+
