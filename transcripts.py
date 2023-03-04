@@ -99,6 +99,9 @@ progress_txt = 'Converting Post'
 
 commands = 'Hlw {name},\n\n**Available Commands:**\n/start or /help to Display START_MSG\n/api or /link to add Your API KEY.\n/add_channel or /channel to Add Your Channel to replace links.\n/del_channel or /remove_channel\n/see_link or /see_channel to See your Channel link if already set.\n/footer to ADD your Custom Footer Text.\n/del_footer to Reset your Footer text.\n/see_footer to SEE Your Custom Footer Text.\n/unlink or /logout to Unlink API KEY\n/feauture or /feature to know bot\'s features\n/commands to display this message.\n/about to know my creator or something...\n\n**ADMIN_CMDs:**\n/users to Check total Users in Bot\n/broadcast to Broadcast MSG to All Users.\n/info to GET All INFO about User.'
 
+change_domain_text = "**Current Domain:** {}\n\nChoose Domain Name 👇"
+
+
 un_suc_text = '''__Invalid API token Or Maybe Wrong Format...__ **Please Recheck It And Try Again...
 
 Contact : @Rahul_Thakor For Any Kind Of Help Or Bug Report.**'''
