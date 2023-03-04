@@ -305,9 +305,15 @@ async def text_msgs(_, m):
         pass
     else:
         INVITE_LINK = ' '
+    DOMAIN = find_any(user,"DOMAIN")
+    if not DOMAIN:
+      DOMAIN = 'mdiskshortners.in'
+
+    else:
+      DOMAIN = DOMAIN.lower()
     try:
         await MSG.edit_text(f'**{progress_txt}..**')
-        caption = convert_post(m.text, API,INVITE_LINK)
+        caption = convert_post(m.text, API,INVITE_LINK,DOMAIN)
         caption = f'{caption}\n{FOOTER}'
         text = f'<b>{caption}</b>'
         await MSG.edit_text(f'{text}', disable_web_page_preview=True)
