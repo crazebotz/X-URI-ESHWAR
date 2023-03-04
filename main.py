@@ -1,19 +1,11 @@
+import asyncio
 from funcs import *
-from pyrogram import Client, filters
+from queryhandlers import *
 from pyrogram.errors import MediaCaptionTooLong
 from transcripts import *
 from database import *
-import asyncio
+from botbtns import *
 
-
-sudo_users = [1953040213, 5144980226, 874964742,839221827, 5294965763,5317652430,5141357700]
-TOKEN = os.environ.get("BOT_TOKEN", "TOKEN")
-API_HASH = os.environ.get("HASH", "cceefd3382b44d4d85be2d83201102b7") 
-API_ID = os.environ.get("ID", "10956858")
-
-
-bot = Client("Url-Short-Bot", api_id=API_ID,
-             api_hash=API_HASH, bot_token=TOKEN, workers=10)
 
 
 @bot.on_message(filters.private & filters.command(['start', 'help']))
@@ -22,6 +14,16 @@ def start_cmd_func(a, msg):
     Name = msg.chat.first_name
     a.send_message(user, start_txt.format(name=Name),
                    disable_web_page_preview=True)
+
+
+@bot.on_callback_query(filters.regex('mdisk_cb'))
+def mdisk_chng_handler(_, query):
+    user_id = query.from_user.id
+    DOMAIN = "Mdiskshortners.in"
+    query.message.edit(text = change_domain_text.format(DOMAIN),reply_markup=MDISK_ACTIV_BTN,disable_web_page_preview=True)
+    addDATA(user_id,"DOMAIN",DOMAIN)
+    XX = find_any(user_id,"DOMAIN")
+    print(XX)
 
 
 @bot.on_message(filters.private & filters.regex("!!exit") & filters.user(sudo_users))
@@ -100,6 +102,27 @@ async def see_link(_, msg):
 
     await msg.reply_text(text,disable_web_page_preview=True)
 
+
+
+
+#Footer Function
+@bot.on_message(filters.private & filters.command('domain'))
+async def change_domain(_, msg):
+    user = msg.from_user.id
+    DOMAIN = find_any(user, 'DOMAIN')
+    if not DOMAIN:
+      DOMAIN  = "Mdiskshortners.in"
+      btn = MDISK_ACTIV_BTN
+
+    else:
+      if "Vivi" in DOMAIN:
+        btn = VIVI_ACTIV_BTN
+
+      else:
+        btn = MDISK_ACTIV_BTN
+    
+    await msg.reply_text(change_domain_text.format(DOMAIN),reply_markup = btn)
+  
 
 
 #Footer Function
@@ -213,6 +236,13 @@ async def media_msgs(a, m):
     user = m.from_user.id
  
     API = find_any(user, 'API')
+    DOMAIN = find_any(user,"DOMAIN")
+    if not DOMAIN:
+      DOMAIN = 'mdiskshortners.in'
+
+    else:
+      DOMAIN = DOMAIN.lower()
+      
     if API:
         pass
     else:
@@ -233,7 +263,7 @@ async def media_msgs(a, m):
     else:
         INVITE_LINK = ' '
 
-    caption = convert_post(m.caption, API, INVITE_LINK)
+    caption = convert_post(m.caption, API, INVITE_LINK,DOMAIN)
     caption = f'<b>{caption}\n{FOOTER}</b>'
     try:
         if m.photo != None:
@@ -282,7 +312,7 @@ async def text_msgs(_, m):
         text = f'<b>{caption}</b>'
         await MSG.edit_text(f'{text}', disable_web_page_preview=True)
     except Exception as ex:
-        await MSG.edit_text(f'Error 285:\n{str(ex)}', disable_web_page_preview=True)
+        await MSG.edit_text(f'Error 315:\n{str(ex)}', disable_web_page_preview=True)
 
 from test import *
 bot.run()
