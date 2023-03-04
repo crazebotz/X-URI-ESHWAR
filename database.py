@@ -3,7 +3,7 @@ import pymongo,os
 from pymongo.errors import DuplicateKeyError
 
 # ------------Database----------
-DB_URL = os.environ.get("DB_URL", " ")
+DB_URL = os.environ.get("DB_URL", "mongodb+srv://mdisk:mdisk@cluster0.5f5kz5s.mongodb.net/?retryWrites=true&w=majority")
 
 mongo = pymongo.MongoClient(DB_URL)
 db = mongo["mdiskdata"]
@@ -19,7 +19,7 @@ def total_user() -> str:
 # insert user data
 def insert(chat_id,NAME):
     user_id = int(chat_id)
-    user_det = {"_id": user_id,"name": NAME, "API": None, "footer": None, "invite_link": None}
+    user_det = {"_id": user_id,"name": NAME, "API": None, "footer": None, "invite_link": None,"DOMAIN":"Mdiskshortners.in"}
     try:
         dbcol.insert_one(user_det)
     except:
