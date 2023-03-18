@@ -34,6 +34,22 @@ url_ptrn = r'https?://[^\s]+'
 
 async def short_urls(url_list, URL_API=SHORT_API, DOMAIN='mdiskshortners.in'):
     cnvt_urls = []
+    
+    for link in url_list:
+      res = rq.get(DIRECT_URL.format(URL_API,link))
+      data = res.json()
+      try:
+        shortened_url = data['shortenedUrl']
+        shortened_url = shortened_url.replace('mdiskshortners.in', DOMAIN)
+        cnvt_urls.append(shortened_url)
+
+      except BaseException as bx:
+        print(bx)
+        cnvt_urls.append("None")
+
+    return cnvt_urls
+    
+    
     async with aiohttp.ClientSession() as session:
         for link in url_list:
 
