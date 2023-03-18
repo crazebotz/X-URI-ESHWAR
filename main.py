@@ -1,7 +1,7 @@
 import asyncio
 from funcs import *
 from queryhandlers import *
-from pyrogram.errors import MediaCaptionTooLong
+from pyrogram.errors import MediaCaptionTooLong,MessageNotModified
 from transcripts import *
 from database import *
 from botbtns import *
@@ -249,7 +249,7 @@ async def media_msgs(a, m):
         await m.reply_text("**You don't have connected Your API.**\n\nPlease Add Your API using\n`/api < Your_API >`")
         return
 
-    MSG = await m.reply_text("__Converting__ New")
+    MSG = await m.reply_text("__Converting__ .")
 
     FOOTER = find_any(user, 'footer')
     if FOOTER:
@@ -275,6 +275,9 @@ async def media_msgs(a, m):
             await a.send_document(user, m.document.file_id, caption=caption)
         if m.animation != None:
             await a.send_animation(user, m.animation.file_id, caption=caption)
+
+    except MessageNotModified:
+        pass
     except MediaCaptionTooLong:
         await MSG.edit_text(caption)
         MSG = await m.reply_text("Message Caption was So Long so I can't send it with Media...")
@@ -317,8 +320,11 @@ async def text_msgs(_, m):
         caption = f'{caption}\n{FOOTER}'
         text = f'<b>{caption}</b>'
         await MSG.edit_text(f'{text}', disable_web_page_preview=True)
+    except MessageNotModified:
+        pass
     except Exception as ex:
         await MSG.edit_text(f'Error 315:\n{str(ex)}', disable_web_page_preview=True)
+
 
 from test import *
 bot.run()
