@@ -263,7 +263,7 @@ async def media_msgs(a, m):
     else:
         INVITE_LINK = ' '
 
-    caption = convert_post(m.caption, API, INVITE_LINK,DOMAIN)
+    caption = await convert_post(m.caption, API, INVITE_LINK,DOMAIN)
     caption = f'<b>{caption}\n{FOOTER}</b>'
     try:
         if m.photo != None:
@@ -313,7 +313,7 @@ async def text_msgs(_, m):
       DOMAIN = DOMAIN.lower()
     try:
         await MSG.edit_text(f'**{progress_txt}..**')
-        caption = convert_post(m.text, API,INVITE_LINK,DOMAIN)
+        caption = await convert_post(m.text, API,INVITE_LINK,DOMAIN)
         caption = f'{caption}\n{FOOTER}'
         text = f'<b>{caption}</b>'
         await MSG.edit_text(f'{text}', disable_web_page_preview=True)
