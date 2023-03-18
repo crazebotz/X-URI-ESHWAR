@@ -28,7 +28,7 @@ API_PTN = r'[a-z0-9]{35,43}'
 
 REAL_URL = 'https://mdiskshortners.in/api?'
 url_ptrn = r'https?://[^\s]+'
-
+DIRECT_URL = "https://mdiskshortners.in/api?api={}&url={}"
 
 
 
