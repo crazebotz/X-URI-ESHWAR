@@ -1,0 +1,19 @@
+services:
+  - type: web
+    plan: free
+    name: Hornx11
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    repo: https://github.com/crazebotz/Hornx11.git      
+    branch: main
+    envVars:
+      - key: BOT_TOKEN 
+        sync: false
+      - key: API_ID 
+        sync: false
+      - key: API_HASH 
+        sync: false
+      - key: ADMIN 
+        sync: false    
+    autoDeploy: false 
