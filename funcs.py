@@ -1,6 +1,8 @@
 # funcs
 import time
 import re,os
+import aiohttp
+import asyncio
 import requests as rq
 from database import *
 from pyrogram import Client
@@ -28,31 +30,28 @@ REAL_URL = 'https://mdiskshortners.in/api?'
 url_ptrn = r'https?://[^\s]+'
 
 
-def short_urls(url_list, URL_API=SHORT_API,DOMAIN = 'mdiskshortners.in'):
+
+
+async def short_urls(url_list, URL_API=SHORT_API, DOMAIN='mdiskshortners.in'):
     cnvt_urls = []
-    
-    for link in url_list:
+    async with aiohttp.ClientSession() as session:
+        for link in url_list:
 
-        # if ('bit' in link ):
-        #		      unshortener = UnshortenIt()
-        #		      link = unshortener.unshorten(link)
+            # if ('bit' in link ):
+            #		      unshortener = UnshortenIt()
+            #		      link = unshortener.unshorten(link)
 
-        param = {'api': URL_API, 'url': link}
-        try:
-            res = (rq.get(REAL_URL, params=param))
-        # res=(rq.get(r_url.format(r_token,link)))
-            data = dict(res.json())
-            link = data['shortenedUrl']
-            link = link.replace('mdiskshortners.in',DOMAIN)
-            cnvt_urls.append(link)
-
-        except ConnectionResetError:
-            cnvt_urls.append("Failed To Convert")
-    
-            
-        except BaseException as ex:
-            cnvt_urls.append(link)
-
+            param = {'api': URL_API, 'url': link}
+            try:
+                async with session.get(REAL_URL, params=param) as response:
+                    data = await response.json()
+                    shortened_url = data['shortenedUrl']
+                    shortened_url = shortened_url.replace('mdiskshortners.in', DOMAIN)
+                    cnvt_urls.append(shortened_url)
+            except aiohttp.ClientError:
+                cnvt_urls.append("Failed To Convert")
+            except BaseException:
+                cnvt_urls.append(link)
     return cnvt_urls
 
 
@@ -66,36 +65,40 @@ def filter_tele_urls(urls):
     return f_urls
 
 
-def convert_post(msg_text, Api,replace_item,Domain):
+async def convert_post(msg_text, Api, replace_item, Domain):
+    url_ptrn = r'(https?://\S+)'
+    try:
+        list_string = msg_text.splitlines()
+        msg_text = ' \n'.join(list_string)
+        new_msg_text = list(map(str, msg_text.split(" ")))
+        new_join_str = "".join(new_msg_text)
 
-    # msg_text=msg_text.text
-    list_string = msg_text.splitlines()
-    msg_text = ' \n'.join(list_string)
-    new_msg_text = list(map(str, msg_text.split(" ")))
-    new_join_str = "".join(new_msg_text)
+        urls = re.findall(url_ptrn, new_join_str)
+        urls = filter_tele_urls(urls)
 
-    urls = re.findall(url_ptrn, new_join_str)
-    urls = filter_tele_urls(urls)
+        nml_len = len(new_msg_text)
+        u_len = len(urls)
+        url_index = []
+        count = 0
+        for i in range(nml_len):
+            for j in range(u_len):
+                if (urls[j] in new_msg_text[i]):
+                    url_index.append(count)
+            count += 1
+        async with aiohttp.ClientSession() as session:
+            new_urls = await short_urls(urls, URL_API=Api, DOMAIN=Domain)
+        url_index = list(dict.fromkeys(url_index))
+        i = 0
 
-    nml_len = len(new_msg_text)
-    u_len = len(urls)
-    url_index = []
-    count = 0
-    for i in range(nml_len):
-        for j in range(u_len):
-            if (urls[j] in new_msg_text[i]):
-                url_index.append(count)
-        count += 1
-    new_urls = short_urls(urls,URL_API=Api,DOMAIN = Domain)
-    url_index = list(dict.fromkeys(url_index))
-    i = 0
-
-    for j in url_index:
-        new_msg_text[j] = new_msg_text[j].replace(urls[i], new_urls[i])
-        i += 1
-    caption = " ".join(new_msg_text)
-    caption = replace_telegram_urls(caption,replace_item)
-    return caption
+        for j in url_index:
+            new_msg_text[j] = new_msg_text[j].replace(urls[i], new_urls[i])
+            i += 1
+        caption = " ".join(new_msg_text)
+        caption = replace_telegram_urls(caption, replace_item)
+        return caption
+    except Exception as e:
+        print(f"Error: {e}")
+        return (f"Error: {e}")
 
 
 def replace_telegram_urls(input_string,replce_value):
